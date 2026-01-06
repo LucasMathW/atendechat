@@ -1,0 +1,14 @@
+# Exemplos do que adicionar:
+node_modules/
+*.log
+*.zip
+*.rar
+*.tar.gz
+.DS_Store
+.env
+dist/
+build/
+*.pyc
+__pycache__/
+*.sqlite
+*.db

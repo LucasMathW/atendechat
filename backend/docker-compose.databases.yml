@@ -1,0 +1,67 @@
+services:
+  cache:
+    image: redis:8.0.1
+    restart: always
+    ports:
+      - "${REDIS_PORT}:${REDIS_PORT}"
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASS}
+      - REDIS_PORT=${REDIS_PORT}
+      - REDIS_DATABASES=${REDIS_DBS}
+    networks:
+      - app_network
+
+  db_postgres:
+    image: postgres:16.9
+    environment:
+      - POSTGRES_PASSWORD=${DB_PASS}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_DB=${DB_NAME}
+    ports:
+      - ${DB_PORT}:${DB_PORT}
+    networks:
+      - app_network
+    healthcheck:
+      test: ["CMD-SHELL", "psql -U ${DB_USER} -d ${DB_NAME} -c 'SELECT 1' || exit 1"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+
+  # db_mysql:
+  #   image: mysql
+  #   networks:
+  #     - app_network
+  #   ports:
+  #     - ${DB_PORT}:${DB_PORT}
+  #   environment:
+  #     - MYSQL_ROOT_PASSWORD=${DB_PASS}
+  #     - MYSQL_DATABASE=${DB_NAME}
+  #     - MYSQL_USER=${DB_USER}
+  #     - MYSQL_PASSWORD=${DB_PASS}
+  #   healthcheck:
+  #     test: "mysql -u$$MYSQL_USER -p$$MYSQL_ROOT_PASSWORD  -e 'SHOW databases'"
+  #     interval: 10s
+  #     retries: 3
+
+  db_migrate:
+    build:
+      dockerfile: ./Dockerfile.sqlsetup
+    environment:
+      - DB_DIALECT=${DB_DIALECT}
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - DB_NAME=${DB_NAME}
+      - DB_USER=${DB_USER}
+      - DB_PASS=${DB_PASS}
+      - DB_DEBUG=${DB_DEBUG}
+    networks:
+      - app_network
+    depends_on:
+      db_postgres:
+      # db_mysql:
+        condition: service_healthy
+
+networks:
+  app_network:
+
+

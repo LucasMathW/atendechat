@@ -1,0 +1,31 @@
+services:
+  cache:
+    image: redis:8.0.1
+    restart: always
+    ports:
+      - 6379:6379
+    environment:
+      - REDIS_PASSWORD=123456
+      - REDIS_PORT=6379
+      - REDIS_DATABASES=redis
+    networks:
+      - app_network
+
+  db_postgres:
+    image: postgres:16.9
+    environment:
+      - POSTGRES_PASSWORD=postgres123
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=codatende
+    ports:
+      - 5432:5432
+    networks:
+      - app_network
+    healthcheck:
+      test: ["CMD-SHELL", "psql -U postgres -d codatende -c 'SELECT 1'"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+
+networks:
+  app_network:

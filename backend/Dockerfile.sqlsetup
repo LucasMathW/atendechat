@@ -1,0 +1,7 @@
+FROM node:20 as builder
+RUN echo "Instalando backend para rodar migrations. . ."
+WORKDIR /app
+COPY . .
+RUN npm install
+RUN npm run build
+ENTRYPOINT [ "npm", "run", "db:migrate" ,"&&", "npm", "run", "db:seed" ]

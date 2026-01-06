@@ -1,0 +1,15 @@
+{
+  "extends": ["react-app"],
+  "rules": {
+    "no-unused-vars": "off",
+    "react-hooks/exhaustive-deps": "off",
+    "eqeqeq": "off",
+    "jsx-a11y/alt-text": "off",
+    "import/no-anonymous-default-export": "off",
+    "no-throw-literal": "off",
+    "array-callback-return": "off",
+    "no-dupe-keys": "off",
+    "no-lone-blocks": "off",
+    "react/jsx-no-comment-textnodes": "off"
+  }
+}

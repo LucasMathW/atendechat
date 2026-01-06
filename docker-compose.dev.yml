@@ -1,0 +1,41 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+      args:
+        STACK_NAME: ${STACK_NAME:-dev}
+        ENABLE_FINANCIAL: ${ENABLE_FINANCIAL:-false}
+        GERENCIANET_PIX_CERT: ${GERENCIANET_PIX_CERT:-production-cert}
+    ports:
+      - "${BACKEND_PORT:-3000}:3000"
+    env_file:
+      - .env
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - app-network
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+      args:
+        REACT_APP_BACKEND_URL: ${BACKEND_URL}
+        REACT_APP_HOURS_CLOSE_TICKETS_AUTO: 24
+        STACK_NAME: ${STACK_NAME:-dev}
+        REACT_APP_COLOR: ${COLOR}
+        REACT_APP_TAB_NAME: ${TAB_NAME}
+    ports:
+      - "${FRONTEND_PORT:-3001}:3001"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - backend
+    networks:
+      - app-network

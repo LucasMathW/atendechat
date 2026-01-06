@@ -1,0 +1,20 @@
+// .sequelizerc na raiz do projeto
+// const path = require('path');
+
+// module.exports = {
+//   'config': path.resolve('config', 'config.json'),
+//   'models-path': path.resolve('src', 'models'),
+//   'seeders-path': path.resolve('src',  'seeders'),
+//   'migrations-path': path.resolve('src', 'databases', 'migrations')  // ← CORRETO!
+// }
+
+require('ts-node/register');
+
+const path = require('path');
+
+module.exports = {
+  config: path.resolve('config/config.json'),
+  'migrations-path': path.resolve('dist/database/migrations'),
+  'models-path': path.resolve('dist/database/models'),
+  'seeders-path': path.resolve('dist/database/seeders')
+};

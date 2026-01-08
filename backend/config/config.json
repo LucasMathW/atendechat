@@ -2,7 +2,7 @@
   "development": {
     "username": "postgres",
     "password": "postgres123",
-    "database": "codatende_dev",
+    "database": "database_dev",
     "host": "localhost",
     "port": 5432,
     "dialect": "postgres"

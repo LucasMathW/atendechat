@@ -1,20 +1,19 @@
 // .sequelizerc na raiz do projeto
-// const path = require('path');
+// const path = require("path");
+// require("ts-node/register");
 
 // module.exports = {
-//   'config': path.resolve('config', 'config.json'),
-//   'models-path': path.resolve('src', 'models'),
-//   'seeders-path': path.resolve('src',  'seeders'),
-//   'migrations-path': path.resolve('src', 'databases', 'migrations')  // ← CORRETO!
-// }
+//   config: path.resolve("config", "config.json"),
+//   "models-path": path.resolve("src", "models"),
+//   "seeders-path": path.resolve("src", "seeders"),
+//   "migrations-path": path.resolve("src", "database", "migrations") // ← CORRETO!
+// };
 
-require('ts-node/register');
-
-const path = require('path');
+const { resolve } = require("path");
 
 module.exports = {
-  config: path.resolve('config/config.json'),
-  'migrations-path': path.resolve('dist/database/migrations'),
-  'models-path': path.resolve('dist/database/models'),
-  'seeders-path': path.resolve('dist/database/seeders')
+  config: resolve(__dirname, "config", "config.json"), //OK
+  "models-path": resolve(__dirname, "src", "models"), //OK
+  "migrations-path": resolve(__dirname, "src", "database", "migrations"), //OK
+  "seeders-path": resolve(__dirname, "src", "database", "seeds") //OK
 };

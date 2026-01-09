@@ -32,7 +32,7 @@ type Session = WASocket & {
   store?: Store;
 };
 
-export const sessions: Session[] = [];
+const sessions: Session[] = [];
 
 const retriesQrCodeMap = new Map<number, number>();
 
@@ -111,6 +111,38 @@ export const initWASocket = async (whatsapp: Whatsapp): Promise<Session> => {
           msgRetryCounterCache,
           shouldIgnoreJid: jid => isJidBroadcast(jid)
         });
+
+        // wsocket = makeWASocket({
+        //   version,
+        //   logger: loggerBaileys,
+        //   printQRInTerminal: false,
+        //   auth: state as AuthenticationState,
+        //   generateHighQualityLinkPreview: false,
+        //   shouldIgnoreJid: jid => isJidBroadcast(jid),
+        //   browser: ["Chat", "Chrome", "10.15.7"],
+        //   patchMessageBeforeSending: (message) => {
+        //     const requiresPatch = !!(
+        //       message.buttonsMessage ||
+        //       // || message.templateMessage
+        //       message.listMessage
+        //     );
+        //     if (requiresPatch) {
+        //       message = {
+        //         viewOnceMessage: {
+        //           message: {
+        //             messageContextInfo: {
+        //               deviceListMetadataVersion: 2,
+        //               deviceListMetadata: {},
+        //             },
+        //             ...message,
+        //           },
+        //         },
+        //       };
+        //     }
+
+        //     return message;
+        //   },
+        // })
 
         wsocket.ev.on(
           "connection.update",
@@ -235,6 +267,8 @@ export const initWASocket = async (whatsapp: Whatsapp): Promise<Session> => {
           }
         );
         wsocket.ev.on("creds.update", saveState);
+
+        //store.bind(wsocket.ev);
       })();
     } catch (error) {
       Sentry.captureException(error);
